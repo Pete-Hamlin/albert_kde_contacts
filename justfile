@@ -7,7 +7,7 @@ install:
 
 [working-directory: 'build']
 @build: init
-	cmake .. -DCMAKE_PREFIX_PATH=/usr/lib/$(gcc -dumpmachine)/cmake/
+	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -DCMAKE_PREFIX_PATH=/usr/lib/$(gcc -dumpmachine)/cmake/
 	cmake --build . -j$(nproc)
 	make
 

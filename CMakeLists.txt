@@ -19,7 +19,7 @@ find_package(KF6Contacts REQUIRED)
 find_package(Albert REQUIRED)
 
 albert_plugin(
-	QT Core
+	QT Widgets
 	LINK PRIVATE
 		KPim6::AkonadiCore
 		KPim6::AkonadiWidgets
