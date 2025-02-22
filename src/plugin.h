@@ -4,14 +4,17 @@
 #include <albert/triggerqueryhandler.h>
 
 class Plugin : public albert::ExtensionPlugin,
-               public albert::TriggerQueryHandler
-{
-    ALBERT_PLUGIN
+               public albert::TriggerQueryHandler {
+  ALBERT_PLUGIN
 public:
-    Plugin();
-    ~Plugin() override;
+  Plugin();
+  ~Plugin() override;
 
-    bool allowTriggerRemap() const override;
-    QString synopsis() const override;
-    void handleTriggerQuery(albert::Query*) override;
+  bool allowTriggerRemap() const override;
+  QString synopsis() const override;
+
+  void updateCollectionList();
+  const std::vector<Docset> &docsets() const;
+
+  void handleTriggerQuery(albert::Query *) override;
 };
