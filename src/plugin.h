@@ -1,4 +1,3 @@
-// Copyright (c) 2022 Manuel Schneider
 #pragma once
 #include <albert/extensionplugin.h>
 #include <albert/triggerqueryhandler.h>
@@ -10,11 +9,8 @@ public:
   Plugin();
   ~Plugin() override;
 
-  bool allowTriggerRemap() const override;
-  QString synopsis() const override;
-
   void updateCollectionList();
-  const std::vector<Docset> &docsets() const;
+  QWidget *buildConfigWidget() override;
 
   void handleTriggerQuery(albert::Query *) override;
 };

@@ -1,4 +1,5 @@
 #include "plugin.h"
+#include "configwidget.h"
 #include <albert/logging.h>
 #include <albert/notification.h>
 #include <albert/standarditem.h>
@@ -15,19 +16,13 @@ static auto icon = {QStringLiteral("qsp:SP_MessageBoxWarning")};
 
 // const QStringList Plugin::icon_urls = {"xdg:calc", ":qalculate"};
 
-Plugin::Plugin() {
-  auto s = settings();
-}
+Plugin::Plugin() {}
 
 Plugin::~Plugin() { DEBG << "'Debug' destroyed."; }
 
-QString Plugin::synopsis() const { return "debug-debug-debug-debug"; }
+QWidget *Plugin::buildConfigWidget() { return new ConfigWidget; }
 
-void Plugin::updateCollectionList() {
-
-}
-
-bool Plugin::allowTriggerRemap() const { return false; }
+void Plugin::updateCollectionList() {}
 
 void Plugin::handleTriggerQuery(albert::Query *query) {
   if (query->string() == QStringLiteral("busy")) {
