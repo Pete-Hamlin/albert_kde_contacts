@@ -2,7 +2,10 @@
 
 [working-directory: 'build']
 install:
-	sudo cp contacts_kde.so /usr/lib/albert/
+	cp contacts_kde.so $HOME/.local/lib/albert/
+
+@uninstall:
+	rm  $HOME/.local/lib/albert/contacts_kde.so
 
 
 [working-directory: 'build']
