@@ -1,5 +1,5 @@
 #pragma once
-#include "Collection.h"
+#include "CollectionItem.h"
 #include <albert/extensionplugin.h>
 #include <albert/indexqueryhandler.h>
 
@@ -20,7 +20,8 @@ private:
   void debug(const QString &);
   void error(const QString &, QWidget *modal_parent = nullptr);
 
-  std::vector<Collection> collections_;
+  std::vector<CollectionItem> collections_;
+  static Plugin *instance_;
 
 signals:
   void collectionsChanged();

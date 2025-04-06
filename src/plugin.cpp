@@ -57,7 +57,9 @@ void Plugin::updateCollectionList() {
           if (collection.contentMimeTypes().contains(
                   QString::fromUtf8("text/directory"))) {
             // TODO: parse collectionList here
-            collections_.emplace_back(collection, name(), collection.id());
+
+            collections_.emplace_back(collection.name(),
+                                      QString::number(collection.id()));
             debug(tr("Collection: %1").arg(collection.name()));
           }
         }
