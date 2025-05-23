@@ -2,7 +2,7 @@
 
 [working-directory: 'build']
 install:
-	cp contacts_kde.so $HOME/.local/lib/albert/
+	cp bin/contacts_kde.so $HOME/.local/lib/albert/
 
 @uninstall:
 	rm  $HOME/.local/lib/albert/contacts_kde.so
@@ -17,6 +17,6 @@ install:
 @init:
 	[ ! -d build ] && mkdir build/ || exit 0
 
-@clean:
+@clean: uninstall
 	rm -rf build/
 
