@@ -21,22 +21,37 @@ using namespace std;
 static auto icon = {QStringLiteral("qsp:SP_MessageBoxWarning")};
 
 // const QStringList Plugin::icon_urls = {"xdg:contact"};
+Plugin *Plugin::instance_ = nullptr;
 
 Plugin::Plugin() {
   auto s = settings();
+  instance_ = this;
 
-  connect(this, &Plugin::collectionsChanged, this, &Plugin::updateIndexItems);
+  // connect(this, &Plugin::collectionsChanged, this,
+  // &Plugin::updateIndexItems);
 
   updateCollectionList();
 }
 
 // Plugin::~Plugin() {}
+Plugin *Plugin::instance() { return instance_; }
+
+void Plugin::updateIndexItems() {
+  vector<IndexItem> items;
+
+  setIndexItems(::move(items));
+}
 
 QWidget *Plugin::buildConfigWidget() { return new ConfigWidget; }
+
+const vector<CollectionItem> &Plugin::collections() const {
+  return collections_;
+}
 
 void Plugin::updateCollectionList() {
 
   debug(tr("Fetching contact collections from akonadi"));
+  WARN << "Fetching contact collections from akonadi";
   // Create a fetch job to list all collections
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(
       Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
@@ -57,10 +72,10 @@ void Plugin::updateCollectionList() {
           if (collection.contentMimeTypes().contains(
                   QString::fromUtf8("text/directory"))) {
             // TODO: parse collectionList here
-
             collections_.emplace_back(collection.name(),
                                       QString::number(collection.id()));
             debug(tr("Collection: %1").arg(collection.name()));
+            WARN << tr("Got collection: %1").arg(collection.name());
           }
         }
       });

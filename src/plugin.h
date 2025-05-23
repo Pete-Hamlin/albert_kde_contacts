@@ -11,10 +11,14 @@ public:
   // ~Plugin() override;
 
   QString defaultTrigger() const override { return QStringLiteral("cn "); }
+
+  void updateIndexItems() override;
   QWidget *buildConfigWidget() override;
 
   void updateCollectionList();
-  void updateIndexItems() override;
+  const std::vector<CollectionItem> &collections() const;
+
+  static Plugin *instance();
 
 private:
   void debug(const QString &);
