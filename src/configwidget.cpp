@@ -43,7 +43,7 @@ QVariant CollectionsModel::data(const QModelIndex &index, int role) const {
     return cl.name;
 
   case Qt::ToolTipRole:
-    return cl.id;
+    return cl.url;
   }
 
   return {};
