@@ -8,7 +8,7 @@ class CollectionItem {
 public:
   CollectionItem(QString name, QString url, QString id);
 
-  // void createIndexItems(std::vector<albert::IndexItem> &results) const;
+  void createIndexItems(std::vector<albert::IndexItem> &results) const;
 
   bool isChecked() const;
 

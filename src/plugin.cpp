@@ -39,6 +39,10 @@ Plugin *Plugin::instance() { return instance_; }
 void Plugin::updateIndexItems() {
   vector<IndexItem> items;
 
+  for (const auto &collection : collections_)
+    if (collection.isChecked())
+      collection.createIndexItems(items);
+
   setIndexItems(::move(items));
 }
 
