@@ -29,5 +29,4 @@ private:
 
 signals:
   void collectionsChanged();
-  void statusInfo(const QString &);
 };

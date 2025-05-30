@@ -8,6 +8,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <QMessageBox>
 #include <QSettings>
+#include <QString>
 #include <albert/albert.h>
 #include <albert/logging.h>
 #include <albert/notification.h>
@@ -24,11 +25,10 @@ static auto icon = {QStringLiteral("qsp:SP_MessageBoxWarning")};
 Plugin *Plugin::instance_ = nullptr;
 
 Plugin::Plugin() {
-  auto s = settings();
   instance_ = this;
+  // auto s = settings();
 
-  // connect(this, &Plugin::collectionsChanged, this,
-  // &Plugin::updateIndexItems);
+  connect(this, &Plugin::collectionsChanged, this, &Plugin::updateIndexItems);
 
   updateCollectionList();
 }
@@ -44,7 +44,7 @@ void Plugin::updateIndexItems() {
     if (collection.isChecked())
       collection.createIndexItems(items);
 
-  setIndexItems(::move(items));
+  INFO << QString("Indexed %1 items").arg(items.size());
 }
 
 QWidget *Plugin::buildConfigWidget() { return new ConfigWidget; }
@@ -55,17 +55,16 @@ const vector<CollectionItem> &Plugin::collections() const {
 
 void Plugin::updateCollectionList() {
 
-  // TODO: Update these to DEBG when finished
-  WARN << "Fetching contact collections from akonadi";
+  INFO << "Fetching contact collections from akonadi";
+  //
   // Create a fetch job to list all collections
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(
       Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
 
   QObject::connect(
-      fetchJob, &Akonadi::CollectionFetchJob::result, [this](KJob *job) {
+      fetchJob, &Akonadi::CollectionFetchJob::result, this, [this](KJob *job) {
         if (job->error()) {
-          return error(
-              tr("Error fetching collections: %1").arg(job->errorString()));
+          CRIT << tr("Error fetching collections: %1").arg(job->errorString());
         }
 
         collections_.clear();
@@ -76,20 +75,17 @@ void Plugin::updateCollectionList() {
         for (const Akonadi::Collection &collection : collections) {
           if (collection.contentMimeTypes().contains(
                   QString::fromUtf8("text/directory"))) {
-            // TODO: parse collectionList here
             collections_.emplace_back(collection.displayName(),
                                       collection.name(),
                                       QString::number(collection.id()));
-            WARN << tr("Got collection: %1").arg(collection.name());
+            DEBG << tr("Got collection: %1").arg(collection.name());
           }
         }
+        emit collectionsChanged();
       });
-
-  emit collectionsChanged();
 }
 
 void Plugin::error(const QString &msg, QWidget *modal_parent) {
   WARN << msg;
-  emit statusInfo(msg);
   QMessageBox::warning(modal_parent, qApp->applicationDisplayName(), msg);
 }
