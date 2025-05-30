@@ -20,7 +20,7 @@ using namespace std;
 
 static auto icon = {QStringLiteral("qsp:SP_MessageBoxWarning")};
 
-// const QStringList Plugin::icon_urls = {"xdg:contact"};
+// const QStringList Plugin::icon_urls = {"xdg:contacts"};
 Plugin *Plugin::instance_ = nullptr;
 
 Plugin::Plugin() {
@@ -37,6 +37,7 @@ Plugin::Plugin() {
 Plugin *Plugin::instance() { return instance_; }
 
 void Plugin::updateIndexItems() {
+
   vector<IndexItem> items;
 
   for (const auto &collection : collections_)
@@ -54,7 +55,7 @@ const vector<CollectionItem> &Plugin::collections() const {
 
 void Plugin::updateCollectionList() {
 
-  debug(tr("Fetching contact collections from akonadi"));
+  // TODO: Update these to DEBG when finished
   WARN << "Fetching contact collections from akonadi";
   // Create a fetch job to list all collections
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(
@@ -79,18 +80,12 @@ void Plugin::updateCollectionList() {
             collections_.emplace_back(collection.displayName(),
                                       collection.name(),
                                       QString::number(collection.id()));
-            debug(tr("Collection: %1").arg(collection.name()));
             WARN << tr("Got collection: %1").arg(collection.name());
           }
         }
       });
 
   emit collectionsChanged();
-}
-
-void Plugin::debug(const QString &msg) {
-  DEBG << msg;
-  emit statusInfo(msg);
 }
 
 void Plugin::error(const QString &msg, QWidget *modal_parent) {
