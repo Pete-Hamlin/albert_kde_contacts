@@ -77,7 +77,8 @@ void CollectionItem::createIndexItems(
                   for (auto email : contact.emails()) {
 
                     auto email_item = albert::StandardItem::make(
-                        "email" + email, contact_name, email, {"xdg:mail"},
+                        "email" + email, contact_name, email,
+                        {"xdg:mail-client"},
                         {{"copy", Plugin::tr("Copy"),
                           [email]() { albert::setClipboardText(email); }},
                          {"call", Plugin::tr("Call"),
