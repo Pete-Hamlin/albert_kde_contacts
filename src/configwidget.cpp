@@ -53,19 +53,19 @@ QVariant CollectionsModel::data(const QModelIndex &index, int role) const {
 // &value, int role) {
 bool CollectionsModel::setData(const QModelIndex &index, const QVariant &value,
                                int role) {
-  // if (index.isValid() && role == Qt::CheckStateRole) {
-  //   const auto &cl = Plugin::instance()->collections().at(index.row());
+  if (index.isValid() && role == Qt::CheckStateRole) {
+    const auto &cl = Plugin::instance()->collections().at(index.row());
 
-  //   if (!cl.isChecked() && value == Qt::Checked)
-  //     Plugin::instance()->downloadDocset(index.row());
+    if (!cl.isChecked() && value == Qt::Checked)
+      Plugin::instance()->addCollection(cl.id);
 
-  //   else if (cl.isChecked() && value == Qt::Unchecked)
-  //     Plugin::instance()->removeDocset(index.row());
-  //   {
+    else if (cl.isChecked() && value == Qt::Unchecked)
+      Plugin::instance()->removeCollection(cl.id);
+    {
 
-  //     return true;
-  //   }
-  // }
+      return true;
+    }
+  }
   return false;
 }
 

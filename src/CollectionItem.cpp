@@ -18,7 +18,9 @@ using namespace std;
 CollectionItem::CollectionItem(QString n, QString ur, QString id)
     : name(n), url(ur), id(id) {}
 
-bool CollectionItem::isChecked() const { return true; }
+bool CollectionItem::isChecked() const {
+  return Plugin::instance()->checked().contains(this->id);
+}
 
 void CollectionItem::createIndexItems(
     vector<albert::IndexItem> &results) const {

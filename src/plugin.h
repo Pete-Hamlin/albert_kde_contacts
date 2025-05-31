@@ -2,13 +2,14 @@
 #include "CollectionItem.h"
 #include <albert/extensionplugin.h>
 #include <albert/indexqueryhandler.h>
+#include <qcontainerfwd.h>
 
 class Plugin : public albert::ExtensionPlugin,
                public albert::IndexQueryHandler {
   ALBERT_PLUGIN
 public:
   Plugin();
-  // ~Plugin() override;
+  ~Plugin() override;
 
   QString defaultTrigger() const override { return QStringLiteral("cn "); }
 
@@ -17,14 +18,19 @@ public:
 
   void updateCollectionList();
   const std::vector<CollectionItem> &collections() const;
+  const QStringList &checked() const;
 
   static Plugin *instance();
+
+  void addCollection(QString id);
+  void removeCollection(QString id);
 
 private:
   void debug(const QString &);
   void error(const QString &, QWidget *modal_parent = nullptr);
 
   std::vector<CollectionItem> collections_;
+  QStringList checked_;
   static Plugin *instance_;
 
 signals:

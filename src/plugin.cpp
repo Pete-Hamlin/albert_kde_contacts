@@ -19,21 +19,26 @@ ALBERT_LOGGING_CATEGORY("contacts_kde")
 using namespace albert;
 using namespace std;
 
-static auto icon = {QStringLiteral("qsp:SP_MessageBoxWarning")};
+const char *CFG_COLLECTIONS = "collections";
 
 // const QStringList Plugin::icon_urls = {"xdg:contacts"};
 Plugin *Plugin::instance_ = nullptr;
 
 Plugin::Plugin() {
   instance_ = this;
-  // auto s = settings();
+  auto s = settings();
+
+  checked_ = s->value(CFG_COLLECTIONS, QStringList()).toStringList();
 
   connect(this, &Plugin::collectionsChanged, this, &Plugin::updateIndexItems);
 
   updateCollectionList();
 }
 
-// Plugin::~Plugin() {}
+Plugin::~Plugin() {
+  auto s = settings();
+  s->setValue(CFG_COLLECTIONS, checked_);
+}
 Plugin *Plugin::instance() { return instance_; }
 
 void Plugin::updateIndexItems() {
@@ -45,6 +50,7 @@ void Plugin::updateIndexItems() {
       collection.createIndexItems(items);
 
   INFO << QString("Indexed %1 items").arg(items.size());
+  setIndexItems(::move(items));
 }
 
 QWidget *Plugin::buildConfigWidget() { return new ConfigWidget; }
@@ -53,18 +59,35 @@ const vector<CollectionItem> &Plugin::collections() const {
   return collections_;
 }
 
+const QStringList &Plugin::checked() const { return checked_; }
+
+void Plugin::addCollection(QString id) {
+
+  checked_ << id;
+  emit collectionsChanged();
+}
+
+void Plugin::removeCollection(QString id) {
+  if (checked_.removeOne(id)) {
+    emit collectionsChanged();
+  } else {
+    WARN << "Unable to find collection " << id;
+  }
+}
+
 void Plugin::updateCollectionList() {
 
   INFO << "Fetching contact collections from akonadi";
   //
   // Create a fetch job to list all collections
-  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(
+  Akonadi::CollectionFetchJob *rootFetchJob = new Akonadi::CollectionFetchJob(
       Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
 
   QObject::connect(
-      fetchJob, &Akonadi::CollectionFetchJob::result, this, [this](KJob *job) {
+      rootFetchJob, &Akonadi::CollectionFetchJob::result, this,
+      [this](KJob *job) {
         if (job->error()) {
-          CRIT << tr("Error fetching collections: %1").arg(job->errorString());
+          error(tr("Error fetching collections: %1").arg(job->errorString()));
         }
 
         collections_.clear();
