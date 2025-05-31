@@ -1,9 +1,11 @@
 {
-  "authors" : [ "@Pete-Hamlin" ],
-  "description" : "Access your Contacts via KDE Akonadi",
-  "id" : "contacts_kde",
-  "license" : "BSD-2",
-  "name" : "KDE Contacts",
-  "url" : "",
-  "version" : "0.1"
+  "authors": [
+    "@Pete-Hamlin"
+  ],
+  "description": "Access your Contacts via KDE Akonadi",
+  "id": "contacts_kde",
+  "license": "BSD-2",
+  "name": "KDE Contacts",
+  "url": "https://github.com/Pete-Hamlin/albert_kde_contacts",
+  "version": "0.1"
 }
