@@ -94,7 +94,6 @@ void Plugin::updateCollectionList() {
         Akonadi::CollectionFetchJob *fetchJob =
             qobject_cast<Akonadi::CollectionFetchJob *>(job);
         const Akonadi::Collection::List collections = fetchJob->collections();
-        QList<Akonadi::Collection> contactCollections;
         for (const Akonadi::Collection &collection : collections) {
           if (collection.contentMimeTypes().contains(
                   QString::fromUtf8("text/directory"))) {

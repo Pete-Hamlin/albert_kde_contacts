@@ -2,6 +2,7 @@
 
 [working-directory: 'build']
 install:
+	mkdir -p $HOME/.local/lib/albert/
 	cp bin/contacts_kde.so $HOME/.local/lib/albert/
 
 @uninstall:
