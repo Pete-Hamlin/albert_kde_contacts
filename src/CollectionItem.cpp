@@ -60,18 +60,23 @@ void CollectionItem::createIndexItems(
                       item.payload<KContacts::Addressee>();
 
                   auto contact_name = contact.formattedName();
+                  // auto uri = contact.url().toString();
 
                   for (auto phoneNumber : contact.phoneNumbers()) {
                     auto number = phoneNumber.number();
 
                     auto phone_item = albert::StandardItem::make(
                         "phone" + number, contact_name, number, {"xdg:phone"},
-                        {{"copy", Plugin::tr("Copy"),
-                          [number]() { albert::setClipboardText(number); }},
-                         {"call", Plugin::tr("Call"),
-                          [number]() { albert::openUrl("tel:" + number); }},
-                         {"call", "iMessage",
-                          [number]() { albert::openUrl("sms:" + number); }}});
+                        {
+                            {"copy", "Copy",
+                             [number]() { albert::setClipboardText(number); }},
+                            {"call", "Call",
+                             [number]() { albert::openUrl("tel:" + number); }},
+                            {"message", "Message",
+                             [number]() { albert::openUrl("sms:" + number); }},
+                            // {"edit", "Open in KaddressBook",
+                            //  [number, uri]() { albert::openUrl(uri); }},
+                        });
 
                     results.emplace_back(phone_item, phone_item->text());
                   }
@@ -81,12 +86,14 @@ void CollectionItem::createIndexItems(
                     auto email_item = albert::StandardItem::make(
                         "email" + email, contact_name, email,
                         {"xdg:mail-client"},
-                        {{"copy", Plugin::tr("Copy"),
-                          [email]() { albert::setClipboardText(email); }},
-                         {"call", Plugin::tr("Call"),
-                          [email]() { albert::openUrl("tel:" + email); }},
-                         {"call", "iMessage",
-                          [email]() { albert::openUrl("sms:" + email); }}});
+                        {
+                            {"copy", "Copy",
+                             [email]() { albert::setClipboardText(email); }},
+                            {"mail", "Compose",
+                             [email]() { albert::openUrl("maito:" + email); }},
+                            // {"edit", "Open in KaddressBook",
+                            //  [email, uri]() { albert::openUrl(uri); }},
+                        });
 
                     results.emplace_back(email_item, email_item->text());
                   }
