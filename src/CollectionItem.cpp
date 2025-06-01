@@ -60,7 +60,6 @@ void CollectionItem::createIndexItems(
                       item.payload<KContacts::Addressee>();
 
                   auto contact_name = contact.formattedName();
-                  // auto uri = contact.url().toString();
 
                   for (auto phoneNumber : contact.phoneNumbers()) {
                     auto number = phoneNumber.number();
@@ -74,8 +73,6 @@ void CollectionItem::createIndexItems(
                              [number]() { albert::openUrl("tel:" + number); }},
                             {"message", "Message",
                              [number]() { albert::openUrl("sms:" + number); }},
-                            // {"edit", "Open in KaddressBook",
-                            //  [number, uri]() { albert::openUrl(uri); }},
                         });
 
                     results.emplace_back(phone_item, phone_item->text());
@@ -91,8 +88,6 @@ void CollectionItem::createIndexItems(
                              [email]() { albert::setClipboardText(email); }},
                             {"mail", "Compose",
                              [email]() { albert::openUrl("maito:" + email); }},
-                            // {"edit", "Open in KaddressBook",
-                            //  [email, uri]() { albert::openUrl(uri); }},
                         });
 
                     results.emplace_back(email_item, email_item->text());
