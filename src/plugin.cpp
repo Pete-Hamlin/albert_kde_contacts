@@ -21,7 +21,6 @@ using namespace std;
 
 const char *CFG_COLLECTIONS = "collections";
 
-// const QStringList Plugin::icon_urls = {"xdg:contacts"};
 Plugin *Plugin::instance_ = nullptr;
 
 Plugin::Plugin() {
@@ -78,7 +77,7 @@ void Plugin::removeCollection(QString id) {
 void Plugin::updateCollectionList() {
 
   INFO << "Fetching contact collections from akonadi";
-  //
+
   // Create a fetch job to list all collections
   Akonadi::CollectionFetchJob *rootFetchJob = new Akonadi::CollectionFetchJob(
       Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);

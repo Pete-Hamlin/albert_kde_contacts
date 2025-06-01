@@ -49,8 +49,6 @@ QVariant CollectionsModel::data(const QModelIndex &index, int role) const {
   return {};
 }
 
-// bool CollectionsModel::setData(const QModelIndex &index, const QVariant
-// &value, int role) {
 bool CollectionsModel::setData(const QModelIndex &index, const QVariant &value,
                                int role) {
   if (index.isValid() && role == Qt::CheckStateRole) {
