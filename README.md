@@ -1,8 +1,5 @@
 # KDE Contacts albert extension
 
-![launcher](./doc/launcher_demo.png)
-![settings](./doc/settings_demo.png)
-
 An extension to view your email/phone contacts in the [albert](https://albertlauncher.github.io/) launcher via [akonadi](https://api.kde.org/kdepim/akonadi/html/client_libraries.html).
 Uses an `IndexQueryHandler`, so supports both triggered and global queries.
 
